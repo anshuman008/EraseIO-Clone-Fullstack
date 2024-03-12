@@ -1,14 +1,22 @@
 "use client"
 import React, { useEffect, useState } from 'react'
 import EditorJS from '@editorjs/editorjs';
+//@ts-ignore
 import Header from '@editorjs/header';
+//@ts-ignore
 import List from "@editorjs/list";
+//@ts-ignore
 import Checklist from '@editorjs/checklist'
+//@ts-ignore
 import Paragraph from '@editorjs/paragraph';
+//@ts-ignore
 import Warning from '@editorjs/warning';
 import { useRef } from 'react';
+import { useConvex, useMutation } from 'convex/react';
+import { api } from '@/convex/_generated/api';
+import { toast } from 'sonner';
 
-const EditorComp = () => {
+const EditorComp = ({onSaveTrigger,fileId}:any) => {
 
 const rawDocument = {
     "time" : 1550476186479,
@@ -33,12 +41,19 @@ const rawDocument = {
 ],
     "version" : "2.8.1"
 }
-  const ref = useRef();
+  const ref = useRef<EditorJS>();
+  const updateDocument = useMutation(api.files.updateDocument);
+
    const [document,setDocument] = useState(rawDocument);
 
     useEffect(()=>{
         initEditor()
     },[])
+
+    useEffect(()=>{
+        console.log('terigeer Value',onSaveTrigger)
+       onSaveTrigger&&onSaveDocument();
+    },[onSaveTrigger])
 
     const initEditor = () =>{
         const editor = new EditorJS({
@@ -76,6 +91,27 @@ const rawDocument = {
             data: document
           });
           ref.current = editor;
+    }
+
+    const onSaveDocument= ()=>{
+     if(ref.current)
+     {
+      ref.current.save().then((outputData) => {
+        console.log('Article data: ', outputData);
+        updateDocument({
+          _id:fileId,
+          document:JSON.stringify(outputData)
+        }).then((resp)=>{
+  
+                toast('Document Updated!!')
+  
+        },(e)=>{
+          toast('Error Something is Wrong!!')
+        })
+      }).catch((error) => {
+        console.log('Saving failed: ', error)
+      });
+     }
     }
   return (
     <div>
