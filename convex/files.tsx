@@ -23,7 +23,7 @@ export const getFiles = query({
         teamId: v.string()
     },
     handler: async(ctx,args)=>{
-        const result = await ctx.db.query('files').filter(q=>q.eq(q.field('teamId'),args.teamId)).collect();
+        const result = await ctx.db.query('files').filter(q=>q.eq(q.field('teamId'),args.teamId)).order('desc').collect();
 
         return result;
     }

@@ -1,13 +1,14 @@
 
 import { ChevronDown, Flag, Github } from 'lucide-react'
 import Image from 'next/image'
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import SideNavTopSection, { TEAM } from './SideNavTopSection'
 import { useKindeBrowserClient } from '@kinde-oss/kinde-auth-nextjs';
 import SideNavBottomSection from './SideNavBottomSection';
 import { useConvex, useMutation } from 'convex/react';
 import { api } from '@/convex/_generated/api';
 import { toast } from 'sonner';
+import { FileListContext } from '@/app/_context/FilesListContext';
 
 
 const SideNav = () => {
@@ -17,6 +18,7 @@ const SideNav = () => {
  const convex = useConvex();
 
  const [totalFiles,setTotalFiles] = useState<Number>();
+  const {fileList_,setFileList_} = useContext(FileListContext);
 
  useEffect(()=>{
   activeTeam&&getFiles();
@@ -49,6 +51,7 @@ const SideNav = () => {
    const result = await convex.query(api.files.getFiles,{teamId:activeTeam?._id});
 
    console.log(result);
+   setFileList_(result);
    setTotalFiles(result?.length)
   }
   return (
