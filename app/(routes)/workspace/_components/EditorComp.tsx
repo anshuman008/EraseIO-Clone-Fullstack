@@ -15,8 +15,9 @@ import { useRef } from 'react';
 import { useConvex, useMutation } from 'convex/react';
 import { api } from '@/convex/_generated/api';
 import { toast } from 'sonner';
+import { FILE } from '../../dashboard/_components/FileList';
 
-const EditorComp = ({onSaveTrigger,fileId}:any) => {
+const EditorComp = ({onSaveTrigger,fileId,fileData}:{onSaveTrigger:any,fileId:any,fileData:FILE}) => {
 
 const rawDocument = {
     "time" : 1550476186479,
@@ -47,8 +48,8 @@ const rawDocument = {
    const [document,setDocument] = useState(rawDocument);
 
     useEffect(()=>{
-        initEditor()
-    },[])
+       fileData&&initEditor()
+    },[fileData])
 
     useEffect(()=>{
         console.log('terigeer Value',onSaveTrigger)
@@ -88,7 +89,7 @@ const rawDocument = {
             },
 
             holder: 'editorjs',
-            data: document
+            data: fileData.document?JSON.parse(fileData.document):rawDocument
           });
           ref.current = editor;
     }
