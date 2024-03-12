@@ -27,11 +27,15 @@ const SideNav = () => {
 
   const onFileCreate = (fileName:string) =>{
     console.log(fileName)
+    const teamId = (activeTeam ? activeTeam._id : '') as string;
+    const createdBy = (activeTeam ? activeTeam.createdBy : '') as string;
+
+
 
     createFile({
       fileName: fileName,
-      teamId: activeTeam?._id,
-      createdBy: user?.email,
+      teamId: teamId,
+      createdBy: createdBy,
       archive: false,
       document: '',
       whiteboard: ''
@@ -48,7 +52,11 @@ const SideNav = () => {
   }
 
   const getFiles = async()=>{
-   const result = await convex.query(api.files.getFiles,{teamId:activeTeam?._id});
+
+     // Use a default string value if activeTeam is undefined
+  const teamId = (activeTeam ? activeTeam._id : '') as string;
+
+   const result = await convex.query(api.files.getFiles,{teamId:teamId});
 
    console.log(result);
    setFileList_(result);

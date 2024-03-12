@@ -30,7 +30,7 @@ const Canvas = ({onSaveTrigger,fileId,fileData}:{onSaveTrigger:any,fileId:any,fi
      initialData = {{
         elements: fileData?.whiteboard&&JSON.parse(fileData.whiteboard)
      }}
-     onChange={(excalidrawElements, appState, files) => setWhiteboardData(excalidrawElements)}
+     onChange={(excalidrawElements:any, appState:any, files:any) => setWhiteboardData(excalidrawElements)}
      UIOption = {{
         canvasAction:{
             export:false,
