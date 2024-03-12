@@ -6,6 +6,7 @@ import EditorComp from '../_components/EditorComp'
 import { useConvex } from 'convex/react'
 import { api } from '@/convex/_generated/api'
 import { FILE } from '../../dashboard/_components/FileList'
+import Canvas from '../_components/Canvas'
 const WorkSpace = ({params}:any) => {
 
   
@@ -33,8 +34,8 @@ const WorkSpace = ({params}:any) => {
          <EditorComp onSaveTrigger = {triggerSave} fileId ={params.fileId}  fileData = {fileData}/>
         </div>
         {/* whiteboardCanvs */}
-        <div className='bg-red-400 h-screen'>
-       Canvas
+        <div className='h-screen border-l'>
+       <Canvas  onSaveTrigger = {triggerSave} fileId ={params.fileId}  fileData = {fileData}/>
         </div>
       </div>
 
